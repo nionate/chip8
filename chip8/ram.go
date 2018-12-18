@@ -9,7 +9,7 @@ func (r RAM) Write(pos int16, data []byte) error {
 	return nil
 }
 
-func (r RAM) Read(pos int16, size int16) ([]byte, error) {
+func (r RAM) Read(pos uint16, size uint16) ([]byte, error) {
 	return r[pos:pos+size], nil
 }
 
