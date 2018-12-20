@@ -1,5 +1,7 @@
 package chip8
 
+import "errors"
+
 type RAM []byte
 
 func (r RAM) Write(pos int16, data []byte) error {
@@ -10,9 +12,12 @@ func (r RAM) Write(pos int16, data []byte) error {
 }
 
 func (r RAM) Read(pos uint16, size uint16) ([]byte, error) {
-	return r[pos:pos+size], nil
+	if int(pos) >= len(r) || int(pos+size) >= len(r) {
+		return nil, errors.New("Memory position not found")
+	}
+	return r[pos : pos+size], nil
 }
 
-func NewRAM() RAM{
+func NewRAM() RAM {
 	return make(RAM, 64)
 }
