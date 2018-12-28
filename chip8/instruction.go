@@ -29,3 +29,19 @@ func SNE(cpu *CPU, params uint16) error {
 	}
 	return nil
 }
+
+func LD(cpu *CPU, params uint16) error {
+	x := params >> 8 & 0xF
+	kk := params & 0xFF
+	cpu.V[x] = uint8(kk)
+
+	/*
+
+		res1 := fmt.Sprintf("%x", kk)
+		res2 := fmt.Sprintf("%x", cpu.V[x])
+
+		¿Por que solo imprime en consola cuando el test falla?
+		fmt.Printf("kk '%s'\n", res1)
+		fmt.Printf("Vx '%s'\n", res2)*/
+	return nil
+}

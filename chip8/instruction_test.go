@@ -77,3 +77,45 @@ func TestSE5True(t *testing.T) {
 		t.Error("Expected to skip an instruction")
 	}
 }
+
+func TestSE5False(t *testing.T) {
+	var params uint16 = 0x5D40
+	cpu := chip8.NewCPU()
+	cpu.V[0xD] = 0xF
+	cpu.V[0x4] = 0xD
+	err := chip8.SE(cpu, params)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if cpu.PC == chip8.MemoryStart+chip8.InstructionSize {
+		//No se salto la instruccion
+		t.Error("Expected to skip an instruction")
+	}
+}
+
+func TestLDTrue(t *testing.T) {
+	var params uint16 = 0x6D40
+	cpu := chip8.NewCPU()
+	err := chip8.LD(cpu, params)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if cpu.V[0xD] != 0x40 {
+		t.Error("Expected Vx to be equals to kk")
+	}
+}
+
+/*func TestLDFalse(t *testing.T) {
+	var params uint16 = 0x6D40
+	cpu := chip8.NewCPU()
+	err := chip8.LD(cpu, params)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if cpu.V[0xD] == 0x40 {
+		t.Error("Expected Vx to be not equals to kk")
+	}
+}*/
