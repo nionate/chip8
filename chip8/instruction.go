@@ -11,6 +11,13 @@ func SE(cpu *CPU, params uint16) error {
 	if cpu.V[x] == uint8(kk) {
 		cpu.PC += InstructionSize
 	}
+
+	//Skip next instruction if Vx = Vy.
+	x = params >> 8 & 0xF
+	y := params >> 4 & 0xF
+	if cpu.V[x] == cpu.V[y] {
+		cpu.PC += InstructionSize
+	}
 	return nil
 }
 

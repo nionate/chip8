@@ -35,7 +35,7 @@ func TestSEFalse(t *testing.T) {
 }
 
 func TestSNETrue(t *testing.T) {
-	var params uint16 = 0x34CC
+	var params uint16 = 0x44CC
 	cpu := chip8.NewCPU()
 	cpu.V[0x4] = 0xDB
 	err := chip8.SNE(cpu, params)
@@ -49,7 +49,7 @@ func TestSNETrue(t *testing.T) {
 }
 
 func TestSNEFalse(t *testing.T) {
-	var params uint16 = 0x3D23
+	var params uint16 = 0x4D23
 	cpu := chip8.NewCPU()
 	cpu.V[0xD] = 0x23
 	err := chip8.SNE(cpu, params)
@@ -58,6 +58,22 @@ func TestSNEFalse(t *testing.T) {
 	}
 
 	if cpu.PC == chip8.MemoryStart+chip8.InstructionSize {
+		t.Error("Expected to skip an instruction")
+	}
+}
+
+func TestSE5True(t *testing.T) {
+	var params uint16 = 0x5D40
+	cpu := chip8.NewCPU()
+	cpu.V[0xD] = 0xF
+	cpu.V[0x4] = 0xF
+	err := chip8.SE(cpu, params)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if cpu.PC != chip8.MemoryStart+chip8.InstructionSize {
+		//No se salto la instruccion
 		t.Error("Expected to skip an instruction")
 	}
 }
