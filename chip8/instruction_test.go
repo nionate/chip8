@@ -119,3 +119,18 @@ func TestLDTrue(t *testing.T) {
 		t.Error("Expected Vx to be not equals to kk")
 	}
 }*/
+
+func TestADDTrue(t *testing.T) {
+	var params uint16 = 0x7D40
+	cpu := chip8.NewCPU()
+	cpu.V[0xD] = uint8(0x5)
+	err := chip8.ADD(cpu, params)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if cpu.V[0xD] != (uint8(0x5) + uint8(0x40)) {
+		t.Error("Expected Vx to be equals to Vx + kk")
+	}
+}

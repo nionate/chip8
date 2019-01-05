@@ -3,7 +3,19 @@ package chip8
 type Instruction func(cpu *CPU, params uint16) error
 
 /**
+3xkk - SE Vx, byte
+Skip next instruction if Vx = kk.
 
+The interpreter compares register Vx to kk,
+and if they are equal,
+increments the program counter by 2.
+
+5xy0 - SE Vx, Vy
+Skip next instruction if Vx = Vy.
+
+The interpreter compares register Vx to register Vy,
+and if they are equal,
+increments the program counter by 2.
 **/
 func SE(cpu *CPU, params uint16) error {
 	x := params >> 8 & 0xF
@@ -21,6 +33,14 @@ func SE(cpu *CPU, params uint16) error {
 	return nil
 }
 
+/*
+4xkk - SNE Vx, byte
+Skip next instruction if Vx != kk.
+
+The interpreter compares register Vx to kk,
+and if they are not equal,
+increments the program counter by 2.
+*/
 func SNE(cpu *CPU, params uint16) error {
 	x := params >> 8 & 0xF
 	kk := params & 0xFF
@@ -30,6 +50,12 @@ func SNE(cpu *CPU, params uint16) error {
 	return nil
 }
 
+/*
+6xkk - LD Vx, byte
+Set Vx = kk.
+
+The interpreter puts the value kk into register Vx.
+*/
 func LD(cpu *CPU, params uint16) error {
 	x := params >> 8 & 0xF
 	kk := params & 0xFF
@@ -43,5 +69,20 @@ func LD(cpu *CPU, params uint16) error {
 		¿Por que solo imprime en consola cuando el test falla?
 		fmt.Printf("kk '%s'\n", res1)
 		fmt.Printf("Vx '%s'\n", res2)*/
+	return nil
+}
+
+/*
+7xkk - ADD Vx, byte
+Set Vx = Vx + kk.
+
+Adds the value kk to the value of register Vx,
+then stores the result in Vx.
+*/
+func ADD(cpu *CPU, params uint16) error {
+	x := params >> 8 & 0xF
+	kk := params & 0xFF
+	cpu.V[x] = uint8(cpu.V[x]) + uint8(kk)
+
 	return nil
 }
