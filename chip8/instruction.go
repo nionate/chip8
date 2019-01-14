@@ -1,5 +1,7 @@
 package chip8
 
+import "fmt"
+
 type Instruction func(cpu *CPU, params uint16) error
 
 /**
@@ -23,13 +25,19 @@ func SE(cpu *CPU, params uint16) error {
 	if cpu.V[x] == uint8(kk) {
 		cpu.PC += InstructionSize
 	}
+	fmt.Printf("%04X -> SE V%d, %02X\n", params, x, kk)
+	return nil
+}
 
+func SE5(cpu *CPU, params uint16) error {
 	//Skip next instruction if Vx = Vy.
-	x = params >> 8 & 0xF
+	x := params >> 8 & 0xF
 	y := params >> 4 & 0xF
 	if cpu.V[x] == cpu.V[y] {
 		cpu.PC += InstructionSize
 	}
+	fmt.Printf("%04X -> SE5 V%d, V%d\n", params, x, y)
+
 	return nil
 }
 
@@ -47,6 +55,7 @@ func SNE(cpu *CPU, params uint16) error {
 	if cpu.V[x] != uint8(kk) {
 		cpu.PC += InstructionSize
 	}
+	fmt.Printf("%04X -> SNE V%d, %02X\n", params, x, kk)
 	return nil
 }
 
@@ -61,6 +70,7 @@ func LD(cpu *CPU, params uint16) error {
 	kk := params & 0xFF
 	cpu.V[x] = uint8(kk)
 
+	fmt.Printf("%04X -> LD V%d, %02X\n", params, x, kk)
 	/*
 
 		res1 := fmt.Sprintf("%x", kk)
@@ -83,6 +93,22 @@ func ADD(cpu *CPU, params uint16) error {
 	x := params >> 8 & 0xF
 	kk := params & 0xFF
 	cpu.V[x] = uint8(cpu.V[x]) + uint8(kk)
+
+	fmt.Printf("%04X -> ADD V%d, %02X\n", params, x, kk)
+	return nil
+}
+
+func LD8(cpu *CPU, params uint16) error {
+	x := params >> 8 & 0xF
+	y := params >> 4 & 0xF
+
+	//cpu.V[x] = cpu.V[y]
+
+	res1 := fmt.Sprintf("%x", x)
+	res2 := fmt.Sprintf("%x", cpu.V[y])
+
+	fmt.Printf("x '%s'\n", res1)
+	fmt.Printf("Vy '%s'\n", res2)
 
 	return nil
 }

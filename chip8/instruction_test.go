@@ -67,7 +67,7 @@ func TestSE5True(t *testing.T) {
 	cpu := chip8.NewCPU()
 	cpu.V[0xD] = 0xF
 	cpu.V[0x4] = 0xF
-	err := chip8.SE(cpu, params)
+	err := chip8.SE5(cpu, params)
 	if err != nil {
 		t.Error(err)
 	}
@@ -83,7 +83,7 @@ func TestSE5False(t *testing.T) {
 	cpu := chip8.NewCPU()
 	cpu.V[0xD] = 0xF
 	cpu.V[0x4] = 0xD
-	err := chip8.SE(cpu, params)
+	err := chip8.SE5(cpu, params)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,5 +132,20 @@ func TestADDTrue(t *testing.T) {
 
 	if cpu.V[0xD] != (uint8(0x5) + uint8(0x40)) {
 		t.Error("Expected Vx to be equals to Vx + kk")
+	}
+}
+
+func TestLD8True(t *testing.T) {
+	var params uint16 = 0x8D40
+	cpu := chip8.NewCPU()
+	err := chip8.LD8(cpu, params)
+	cpu.V[0x4] = 0xDD
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if cpu.V[0xD] != cpu.V[0x4] {
+		t.Error("Expected Vx to be equals to Vy")
 	}
 }
